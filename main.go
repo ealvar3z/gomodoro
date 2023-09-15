@@ -89,7 +89,30 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m model) View() string {
-	str := fmt.Sprintf("\n\n   %s %s Time Left: %s %s\n\n", m.spinner.View(), m.mode, m.timeLeft, quitKeys.Help().Desc)
+	// adding lipgloss styles
+	modeStyle := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("205")).
+		Bold(true)
+
+	timeStyle := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("42")).
+		Bold(true)
+
+	helpStyle := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("240")).
+		Faint(true)
+
+	spinnerStyle := lipgloss.NewStyle().
+		Foreground(lipgloss.Color("226"))
+
+	str := fmt.Sprintf(
+		"\n\n   %s %s %s %s \n\n",
+		spinnerStyle.Render(m.spinner.View()),
+		modeStyle.Render(m.mode),
+		timeStyle.Render(fmt.Sprintf("Time Left: %s", m.timeLeft)),
+		helpStyle.Render("Press q to quit"),
+	)
+
 	if m.quitting {
 		return str + "\n"
 	}
